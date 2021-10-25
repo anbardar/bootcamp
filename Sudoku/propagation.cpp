@@ -1,55 +1,13 @@
 
-// #include<iostream>
-// #include<cmath>
-
-// using namespace std;
-
-// //nt grid[N][N];
-
-// const int N = 9;
-
-
-// class grid {
-// public:
-//     int i=0,j =0;
-//     int 
-//     cell = new int[N][N];
-//     grid()//default;
-//     { cout<<"enter sudoku numbers, empty spaces 0" << endl;
-//       for(int i=0;i<9;i++)
-//       {
-//         for(int j=0; j<9; j++)
-//         {
-//             cin >> *cell[i][j];
-//         }
-//       } 
-    
-//     };
-//     ~grid()
-//     {
-//       delete *cell[9][9];
-//     }; //check the virtual option
-    
-//     grid findEmpty(grid);
-
-//     // (const int &_p, const int &_a):Perimiter(_p),Area(_a){}
-//     // virtual ~cell() = 0;
-//     // bool operator <(const Shape &s);
-//     // bool operator >(const Shape &s);
-//     // bool operator ==(const Shape &s);
-//     // void searchInRow() {}
-//     // void searchInCol() {}
-//     // void searchInSquare() {}
-// private:
-    
-// };
-
-
 #include <iostream>
 #include <vector>
 #include <algorithm>
 #include <memory>
+
+
 using namespace std;
+
+
 
 class Possible {
    vector<bool> _b;
