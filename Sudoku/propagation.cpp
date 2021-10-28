@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -10,20 +9,20 @@ using namespace std;
 
 
 class Possible {
-   vector<bool> _b;
+   vector<bool> _b;  //makes it easy to access bits
 public:
    Possible() : _b(9, true) {}
    bool   is_on(int i) const { return _b[i-1]; }
-   int    count()      const { return std::count(_b.begin(), _b.end(), true); }
+   int    count()      const { return std::count(_b.begin(), _b.end(), true); } //count possibilities(trues) in each cell
    void   eliminate(int i)   { _b[i-1] = false; }
    int    val()        const {
-      auto it = find(_b.begin(), _b.end(), true);
-      return (it != _b.end() ? 1 + (it - _b.begin()) : -1);
+      auto it = find(_b.begin(), _b.end(), true); //possibilities stored in the vector for each cell
+      return (it != _b.end() ? 1 + (it - _b.begin()) : -1);  //derive the digit (1-9) out from the boolean value of the corresponding bit location based on being t or f
    }
    string str(int wth) const;
 };
 
-string Possible::str(int width) const {
+string Possible::str(int width) const {  //check exactly what is it doing? (filling in the possible numbers for each cell, 1 to 9) just has been used in print function
    string s(width, ' ');
    int k = 0;
    for (int i = 1; i <= 9; i++) {
@@ -33,22 +32,22 @@ string Possible::str(int width) const {
 } 
 
 class Sudoku {
-   vector<Possible> _cells;
-   static vector< vector<int> > _group, _neighbors, _groups_of;
-
+   vector<Possible> _cells; //sudoku obj is consist of a vector of _b cells (possible obj)
+   static vector< vector<int> > _group, _neighbors, _groups_of; //sudoku obj has a member (a vector) to recognize the correcponding col, row and square for each cell
+   //vector of vector is two dimentinal array
    bool     eliminate(int k, int val);
 public:
    Sudoku(string s);
    static void init();
 
    Possible possible(int k) const { return _cells[k]; }
-   bool     is_solved() const;
+   bool     is_solved() const;      //check soduko is solved or not by checking the available possibilities for each cell, it should be one per each to consider soduko solved
    bool     assign(int k, int val);
    int      least_count() const;
    void     write(ostream& o) const;
 };
 
-bool Sudoku::is_solved() const {
+bool Sudoku::is_solved() const {  
    for (int k = 0; k < _cells.size(); k++) {
       if (_cells[k].count() != 1) {
          return false;
@@ -60,9 +59,9 @@ bool Sudoku::is_solved() const {
 void Sudoku::write(ostream& o) const {
    int width = 1;
    for (int k = 0; k < _cells.size(); k++) {
-      width = max(width, 1 + _cells[k].count());
+      width = max(width, 1 + _cells[k].count());  //check if the number of possibilities for each cell is higher than 1 
    }
-   const string sep(3 * width, '-');
+   const string sep(3 * width, '-'); //do not get what sep function is doing, is it from templates or libraries?
    for (int i = 0; i < 9; i++) {
       if (i == 3 || i == 6) {
          o << sep << "+-" << sep << "+" << sep << endl;
@@ -93,7 +92,7 @@ void Sudoku::init() {
       for (int x = 0; x < _groups_of[k].size(); x++) {
          for (int j = 0; j < 9; j++) {
             int k2 = _group[_groups_of[k][x]][j];
-            if (k2 != k) _neighbors[k].push_back(k2);
+            if (k2 != k) _neighbors[k].push_back(k2); //this function is used to delete the last character from the string
          }
       }
    }
@@ -186,18 +185,19 @@ unique_ptr<Sudoku> solve(unique_ptr<Sudoku> S) {
          }
       }
    }
-   return {};
+   return{} ;
 }
 
 int main() {
    Sudoku::init();
    string line;
-   while (getline(cin, line)) {
-      if (auto S = solve(unique_ptr<Sudoku>(new Sudoku(line)))) {
+   while (getline(cin, line)) { //getinline This function is used to store a stream of characters as entered by the user in the object memory.
+      if (auto S = solve(unique_ptr<Sudoku>(new Sudoku(line)))) { //modify functions to print the possibilities in the vector
          S->write(cout);
       } else {
-         cout << "No solution";
+         cout << "No solution in constraint propogation, let's try brute force!" << endl;//add brute force here
       }
-      cout << endl;
+      
    }
+   return 0;
 }
